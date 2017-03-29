@@ -1,16 +1,16 @@
-CREATE TABLE IF NOT EXISTS club (
+﻿CREATE TABLE club (
   id serial PRIMARY KEY,
   title CHARACTER VARYING(100) NOT NULL,
   opt_lock_version INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS city (
+CREATE TABLE city (
   id serial PRIMARY KEY,
   title CHARACTER VARYING(100) NOT NULL,
   opt_lock_version INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS client (
+CREATE TABLE client (
   id serial PRIMARY KEY,
   first_name CHARACTER VARYING(20) NOT NULL,
   last_name CHARACTER VARYING(20) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS client (
   FOREIGN KEY (city_id) REFERENCES city (id)
 );
 
-CREATE TABLE IF NOT EXISTS client_club
+CREATE TABLE client_club
 (
 	client_id      INTEGER,
 	club_id       INTEGER,

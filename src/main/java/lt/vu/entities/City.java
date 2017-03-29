@@ -17,17 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "COURSE")
+@Table(name = "CITY")
 @NamedQueries({
-    @NamedQuery(name = "Course.findAll", query = "SELECT c FROM Course c"),
-    @NamedQuery(name = "Course.findById", query = "SELECT c FROM Course c WHERE c.id = :id"),
-    @NamedQuery(name = "Course.findByName", query = "SELECT c FROM Course c WHERE c.name = :name"),
-    @NamedQuery(name = "Course.findByOptLockVersion", query = "SELECT c FROM Course c WHERE c.optLockVersion = :optLockVersion")})
+    @NamedQuery(name = "City.findAll", query = "SELECT u FROM City u"),
+    @NamedQuery(name = "City.findById", query = "SELECT u FROM City u WHERE u.id = :id"),
+    @NamedQuery(name = "City.findByTitle", query = "SELECT u FROM City u WHERE u.title = :title"),
+    @NamedQuery(name = "City.findByOptLockVersion", query = "SELECT u FROM City u WHERE u.optLockVersion = :optLockVersion")})
 @Getter
 @Setter
-@EqualsAndHashCode(of = "name")
-@ToString(of = {"id", "name"})
-public class Course implements Serializable {
+@EqualsAndHashCode(of = "title")
+@ToString(of = {"id", "title"})
+public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -35,14 +35,14 @@ public class Course implements Serializable {
     @Column(name = "ID")
     private Integer id;
 
-    @Size(min = 4, max = 50)
-    @Column(name = "NAME")
-    private String name;
+    @Size(max = 50)
+    @Column(name = "TITLE")
+    private String title;
 
     @Version
     @Column(name = "OPT_LOCK_VERSION")
     private Integer optLockVersion;
 
-    @ManyToMany(mappedBy = "courseList")
-    private List<Student> studentList = new ArrayList<>();
+    @OneToMany(mappedBy = "city")
+    private List<Client> clientList = new ArrayList<>();
 }

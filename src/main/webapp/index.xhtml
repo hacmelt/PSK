@@ -11,30 +11,22 @@
 <h:body>
     <h1>Laboratory classes for the 1st assignment</h1>
     <dl>
-        <dt><b>Transactions</b></dt>
-        <dd><p>#{firstComp.sayHello()}</p></dd>
-
         <dt><b>Request type use-case example:</b></dt>
         <dd>
             <p>
-                <h:link outcome="simple-usecase-jpa">Create new course and student (DAO with JPA)</h:link><br/>
-                <h:link outcome="simple-usecase-mybatis">Create new course and student (DAO with MyBatis)</h:link>
+                <h:link outcome="simple-usecase-jpa">Create new club and client (DAO with JPA)</h:link><br/>
+                <h:link outcome="simple-usecase-mybatis">Create new club and client  (DAO with MyBatis)</h:link>
             </p>
         </dd>
 
         <dt><b>Conversation type use-case example:</b></dt>
         <dd>
             <p>
-                <h:link outcome="conversation-cdi">Example with CDI - Jei naudojate TomEE, pridėkite Hibernate biblioteką (žr. aukščiau)</h:link><br/>
-                Papildoma medžiaga: <h:link outcome="conversation-ejb">Example with EJB</h:link>
+                <h:link outcome="conversation-cdi">Example with CDI</h:link><br/>
             </p>
         </dd>
 
-        <dt>Papildoma medžiaga: <b>Asynchronous calls</b></dt>
-        <dd><p>#{compA.sayHello()}</p></dd>
 
-        <dt>Papildoma medžiaga: <b>Cache propagation</b></dt>
-        <dd><p>#{comp1.sayHello()}</p></dd>
     </dl>
 </h:body>
 </html>

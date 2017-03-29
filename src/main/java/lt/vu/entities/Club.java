@@ -17,17 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "UNIVERSITY")
+@Table(name = "CLUB")
 @NamedQueries({
-    @NamedQuery(name = "University.findAll", query = "SELECT u FROM University u"),
-    @NamedQuery(name = "University.findById", query = "SELECT u FROM University u WHERE u.id = :id"),
-    @NamedQuery(name = "University.findByTitle", query = "SELECT u FROM University u WHERE u.title = :title"),
-    @NamedQuery(name = "University.findByOptLockVersion", query = "SELECT u FROM University u WHERE u.optLockVersion = :optLockVersion")})
+    @NamedQuery(name = "Club.findAll", query = "SELECT c FROM Club c"),
+    @NamedQuery(name = "Club.findById", query = "SELECT c FROM Club c WHERE c.id = :id"),
+    @NamedQuery(name = "Club.findByName", query = "SELECT c FROM Club c WHERE c.title = :title"),
+    @NamedQuery(name = "Club.findByOptLockVersion", query = "SELECT c FROM Club c WHERE c.optLockVersion = :optLockVersion")})
 @Getter
 @Setter
 @EqualsAndHashCode(of = "title")
 @ToString(of = {"id", "title"})
-public class University implements Serializable {
+public class Club implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -35,7 +35,7 @@ public class University implements Serializable {
     @Column(name = "ID")
     private Integer id;
 
-    @Size(max = 50)
+    @Size(min = 4, max = 50)
     @Column(name = "TITLE")
     private String title;
 
@@ -43,6 +43,6 @@ public class University implements Serializable {
     @Column(name = "OPT_LOCK_VERSION")
     private Integer optLockVersion;
 
-    @OneToMany(mappedBy = "university")
-    private List<Student> studentList = new ArrayList<>();
+    @ManyToMany(mappedBy = "clubList")
+    private List<Client> clientList = new ArrayList<>();
 }

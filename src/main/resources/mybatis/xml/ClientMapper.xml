@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lt.vu.usecases.mybatis.dao.ClientMapper">
+    <resultMap id="BaseResultMap" type="lt.vu.usecases.mybatis.model.Client">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="first_name" jdbcType="VARCHAR" property="firstName"/>
+        <result column="last_name" jdbcType="VARCHAR" property="lastName"/>
+
+        <result column="city_id" jdbcType="INTEGER" property="cityId"/>
+
+        <!-- Rankomis prirašytas ryšiui ManyToOne Client -> University -->
+        <!-- Nested result (nėra N+1 select problemos) -->
+        <association property="city" resultMap="lt.vu.usecases.mybatis.dao.CityMapper.BaseResultMap"
+                     columnPrefix="city_"/>
+
+        <!-- Rankomis prirašytas ryšiui ManyToMany Client - Club -->
+        <!-- Nested select (yra N+1 select problema) -->
+        <collection property="clubs" javaType="ArrayList" column="id" ofType="Club" select="selectClubsForClient"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM public.client
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="lt.vu.usecases.mybatis.model.Client" useGeneratedKeys="true">
+        INSERT INTO public.client (first_name, last_name, city_id)
+        VALUES (#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},  #{cityId,jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="lt.vu.usecases.mybatis.model.Client">
+        UPDATE public.client
+        SET first_name = #{firstName,jdbcType=VARCHAR},
+        last_name = #{lastName,jdbcType=VARCHAR},
+        city_id = #{cityId,jdbcType=INTEGER}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT id, first_name, last_name,  city_id
+        FROM public.client
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT s.id, s.first_name, s.last_name, s.city_id,
+            u.title as city_title
+        FROM public.client s
+            LEFT JOIN public.city u ON s.city_id = u.id
+    </select>
+
+    <!-- Rankomis prirašytas ryšiui ManyToMany Client - Club -->
+    <select id="selectClubsForClient" resultType="Club">
+        SELECT
+            c.id,
+            c.title
+        FROM public.club c
+            JOIN public.client_club sc on c.id = sc.club_id
+        WHERE sc.client_id = #{id,jdbcType=INTEGER}
+    </select>
+
+</mapper>

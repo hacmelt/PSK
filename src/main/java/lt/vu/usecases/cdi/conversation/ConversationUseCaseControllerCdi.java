@@ -2,10 +2,10 @@ package lt.vu.usecases.cdi.conversation;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lt.vu.entities.Course;
-import lt.vu.entities.Student;
-import lt.vu.usecases.cdi.dao.CourseDAO;
-import lt.vu.usecases.cdi.dao.StudentDAO;
+import lt.vu.entities.Client;
+import lt.vu.entities.Club;
+import lt.vu.usecases.cdi.dao.ClubDAO;
+import lt.vu.usecases.cdi.dao.ClientDAO;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
@@ -28,7 +28,7 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     private static final String PAGE_INDEX_REDIRECT = "conversation-cdi?faces-redirect=true";
 
     private enum CURRENT_FORM {
-        CREATE_COURSE, CREATE_STUDENT, CONFIRMATION
+        CREATE_CLUB, CREATE_CLIENT, CONFIRMATION
     }
 
     @Inject
@@ -39,16 +39,16 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     private Conversation conversation;
 
     @Inject
-    private CourseDAO courseDAO;
+    private ClubDAO clubDAO;
     @Inject
-    private StudentDAO studentDAO;
+    private ClientDAO clientDAO;
 
     @Getter
-    private Course course = new Course();
+    private Club club = new Club();
     @Getter
-    private Student student = new Student();
+    private Client client = new Client();
 
-    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_COURSE;
+    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_CLUB;
     public boolean isCurrentForm(CURRENT_FORM form) {
         return currentForm == form;
     }
@@ -56,17 +56,17 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     /**
      * The first conversation step.
      */
-    public void createCourse() {
+    public void createClub() {
         conversation.begin();
-        currentForm = CURRENT_FORM.CREATE_STUDENT;
+        currentForm = CURRENT_FORM.CREATE_CLIENT;
     }
 
     /**
      * The second conversation step.
      */
-    public void createStudent() {
-        student.getCourseList().add(course);
-        course.getStudentList().add(student);
+    public void createClient() {
+        client.getClubList().add(club);
+        club.getClientList().add(client);
         currentForm = CURRENT_FORM.CONFIRMATION;
     }
 
@@ -76,8 +76,8 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     @Transactional(Transactional.TxType.REQUIRED)
     public String ok() {
         try {
-            courseDAO.create(course);
-            studentDAO.create(student);
+            clubDAO.create(club);
+            clientDAO.create(client);
             em.flush();
             Messages.addGlobalInfo("Success!");
         } catch (OptimisticLockException ole) {
@@ -102,7 +102,7 @@ public class ConversationUseCaseControllerCdi implements Serializable {
         return PAGE_INDEX_REDIRECT;
     }
 
-    public List<Student> getAllStudents() {
-        return studentDAO.getAllStudents();
+    public List<Client> getAllClients() {
+        return clientDAO.getAllClients();
     }
 }

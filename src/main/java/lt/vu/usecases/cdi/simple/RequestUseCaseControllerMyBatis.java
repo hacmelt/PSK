@@ -2,12 +2,12 @@ package lt.vu.usecases.cdi.simple;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lt.vu.usecases.mybatis.dao.CourseMapper;
-import lt.vu.usecases.mybatis.dao.StudentCourseMapper;
-import lt.vu.usecases.mybatis.dao.StudentMapper;
-import lt.vu.usecases.mybatis.model.Course;
-import lt.vu.usecases.mybatis.model.Student;
-import lt.vu.usecases.mybatis.model.StudentCourse;
+import lt.vu.usecases.mybatis.dao.ClubMapper;
+import lt.vu.usecases.mybatis.dao.ClientClubMapper;
+import lt.vu.usecases.mybatis.dao.ClientMapper;
+import lt.vu.usecases.mybatis.model.Client;
+import lt.vu.usecases.mybatis.model.ClientClub;
+import lt.vu.usecases.mybatis.model.Club;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -19,29 +19,29 @@ import java.util.List;
 public class RequestUseCaseControllerMyBatis {
 
     @Getter
-    private Course course = new Course();
+    private Club club = new Club();
     @Getter
-    private Student student = new Student();
+    private Client client = new Client();
 
     @Inject
-    private StudentMapper studentMapper;
+    private ClientMapper clientMapper;
     @Inject
-    private CourseMapper courseMapper;
+    private ClubMapper clubMapper;
     @Inject
-    private StudentCourseMapper studentCourseMapper;
+    private ClientClubMapper clientClubMapper;
 
-    public List<lt.vu.usecases.mybatis.model.Student> getAllStudents() {
-        return studentMapper.selectAll();
+    public List<lt.vu.usecases.mybatis.model.Client> getAllClients() {
+        return clientMapper.selectAll();
     }
 
     @Transactional
-    public void createCourseStudent() {
-        courseMapper.insert(course);
-        studentMapper.insert(student);
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setCourseId(course.getId());
-        studentCourse.setStudentId(student.getId());
-        studentCourseMapper.insert(studentCourse);
+    public void createClubClient() {
+        clubMapper.insert(club);
+        clientMapper.insert(client);
+        ClientClub clientClub = new ClientClub();
+        clientClub.setClubId(club.getId());
+        clientClub.setClientId(client.getId());
+        clientClubMapper.insert(clientClub);
         log.info("Maybe OK...");
     }
 }

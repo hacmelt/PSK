@@ -13,52 +13,48 @@
     <h:body>
         <h1>Request type usecase example (DAO with MyBatis)</h1>
         <h:form>
-            <p:fieldset legend="All students" toggleable="true" style="width: 50%">
-                <p:dataTable value="#{requestUseCaseControllerMyBatis.getAllStudents()}" var="student">
-                    <p:column headerText="Student">
-                        <h:outputText value="#{student.firstName} #{student.lastName} #{student.registrationNo}" />
+            <p:fieldset legend="All clients" toggleable="true" style="width: 50%">
+                <p:dataTable value="#{requestUseCaseControllerMyBatis.getAllClients()}" var="client">
+                    <p:column headerText="Client">
+                        <h:outputText value="#{client.firstName} #{client.lastName}" />
                     </p:column>
-                    <p:column headerText="Courses">
-                        <ui:repeat var="course" value="#{student.courses}">
-                            <h:outputText value="#{course.name} " />
+                    <p:column headerText="Club">
+                        <ui:repeat var="club" value="#{client.clubs}">
+                            <h:outputText value="#{club.title} " />
                         </ui:repeat>
                     </p:column>
-                    <p:column headerText="University">
-                        <h:outputText value="#{student.university.title} " />
+                    <p:column headerText="City">
+                        <h:outputText value="#{client.city.title} " />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
 
-            <h2>Create new course and student</h2>
+            <h2>Create new club and client</h2>
             <table>
                 <tr>
                     <td>
                         <h:panelGrid columns="3">
                             <p:outputLabel for="firstName" value="First name"/>
-                            <p:inputText id="firstName" value="#{requestUseCaseControllerMyBatis.student.firstName}"/>
+                            <p:inputText id="firstName" value="#{requestUseCaseControllerMyBatis.client.firstName}"/>
                             <p:message for="firstName"/>
 
                             <p:outputLabel for="lastName" value="Last name"/>
-                            <p:inputText id="lastName" value="#{requestUseCaseControllerMyBatis.student.lastName}"/>
+                            <p:inputText id="lastName" value="#{requestUseCaseControllerMyBatis.client.lastName}"/>
                             <p:message for="lastName"/>
-
-                            <p:outputLabel for="regnr" value="Registration No."/>
-                            <p:inputText id="regnr" value="#{requestUseCaseControllerMyBatis.student.registrationNo}"/>
-                            <p:message for="regnr"/>
                         </h:panelGrid>
                     </td>
                     <td>
                         <h:panelGrid columns="3">
-                            <p:outputLabel for="courseName" value="Course name"/>
-                            <p:inputText id="courseName" value="#{requestUseCaseControllerMyBatis.course.name}"/>
-                            <p:message for="courseName"/>
+                            <p:outputLabel for="clubTitle" value="Club title"/>
+                            <p:inputText id="clubTitle" value="#{requestUseCaseControllerMyBatis.club.title}"/>
+                            <p:message for="clubTitle"/>
                         </h:panelGrid>
                     </td>
                 </tr>
             </table>
 
-            <p:commandButton value="Create student and course"
-                             actionListener="#{requestUseCaseControllerMyBatis.createCourseStudent()}"
+            <p:commandButton value="Create client and club"
+                             actionListener="#{requestUseCaseControllerMyBatis.createClubClient()}"
                              ajax="false"/>
 
             <p:messages globalOnly="true"/>

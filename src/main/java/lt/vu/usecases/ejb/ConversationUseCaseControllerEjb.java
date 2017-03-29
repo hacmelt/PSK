@@ -1,8 +1,8 @@
 package lt.vu.usecases.ejb;
 
 import lombok.Getter;
-import lt.vu.entities.Course;
-import lt.vu.entities.Student;
+import lt.vu.entities.Club;
+import lt.vu.entities.Client;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 
@@ -23,7 +23,7 @@ public class ConversationUseCaseControllerEjb implements Serializable {
     private static final String PAGE_INDEX_REDIRECT = "conversation-ejb?faces-redirect=true";
 
     private enum CURRENT_FORM {
-        CREATE_COURSE, CREATE_STUDENT, CONFIRMATION
+        CREATE_CLUB, CREATE_CLIENT, CONFIRMATION
     }
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED, synchronization = SynchronizationType.UNSYNCHRONIZED)
@@ -34,16 +34,16 @@ public class ConversationUseCaseControllerEjb implements Serializable {
     private Conversation conversation;
 
     @Inject
-    private CourseEjbDAO courseEjbDAO;
+    private ClubEjbDAO clubEjbDAO;
     @Inject
-    private StudentEjbDAO studentEjbDAO;
+    private ClientEjbDAO clientEjbDAO;
 
     @Getter
-    private Course course = new Course();
+    private Club club = new Club();
     @Getter
-    private Student student = new Student();
+    private Client client = new Client();
 
-    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_COURSE;
+    private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_CLUB;
     public boolean isCurrentForm(CURRENT_FORM form) {
         return currentForm == form;
     }
@@ -51,17 +51,17 @@ public class ConversationUseCaseControllerEjb implements Serializable {
     /**
      * The first conversation step.
      */
-    public void createCourse() {
+    public void createClub() {
         conversation.begin();
-        currentForm = CURRENT_FORM.CREATE_STUDENT;
+        currentForm = CURRENT_FORM.CREATE_CLUB;
     }
 
     /**
      * The second conversation step.
      */
-    public void createStudent() {
-        student.getCourseList().add(course);
-        course.getStudentList().add(student);
+    public void createClient() {
+        client.getClubList().add(club);
+        club.getClientList().add(client);
         currentForm = CURRENT_FORM.CONFIRMATION;
     }
 
@@ -70,8 +70,8 @@ public class ConversationUseCaseControllerEjb implements Serializable {
      */
     public String ok() {
         try {
-            courseEjbDAO.create(course);
-            studentEjbDAO.create(student);
+            clubEjbDAO.create(club);
+            clientEjbDAO.create(client);
             em.joinTransaction();
             em.flush();
             Messages.addGlobalInfo("Success!");
@@ -95,7 +95,7 @@ public class ConversationUseCaseControllerEjb implements Serializable {
         return PAGE_INDEX_REDIRECT;
     }
 
-    public List<Student> getAllStudents() {
-        return studentEjbDAO.getAllStudents();
+    public List<Client> getAllClients() {
+        return clientEjbDAO.getAllClients();
     }
 }

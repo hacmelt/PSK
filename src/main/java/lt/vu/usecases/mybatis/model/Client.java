@@ -7,15 +7,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Student {
+public class Client {
 
     private Integer id;
     private String firstName;
     private String lastName;
-    private Integer universityId;
-    private String registrationNo;
+    private Integer cityId;
 
     // Rankomis prirašyti:
-    private University university;
-    private List<Course> courses;
+    private City city;
+    private List<Club> clubs;
 }

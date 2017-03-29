@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="lt.vu.usecases.mybatis.model.Student" alias="Student"/>
-        <typeAlias type="lt.vu.usecases.mybatis.model.Course" alias="Course"/>
-        <typeAlias type="lt.vu.usecases.mybatis.model.University" alias="University"/>
-        <typeAlias type="lt.vu.usecases.mybatis.model.StudentCourse" alias="StudentCourse"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.Client" alias="Client"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.Club" alias="Club"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.City" alias="City"/>
+        <typeAlias type="lt.vu.usecases.mybatis.model.ClientClub" alias="ClientClub"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -19,9 +19,9 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="mybatis/xml/CourseMapper.xml"/>
-        <mapper resource="mybatis/xml/StudentMapper.xml"/>
-        <mapper resource="mybatis/xml/StudentCourseMapper.xml"/>
-        <mapper resource="mybatis/xml/UniversityMapper.xml"/>
+        <mapper resource="mybatis/xml/ClubMapper.xml"/>
+        <mapper resource="mybatis/xml/ClientMapper.xml"/>
+        <mapper resource="mybatis/xml/ClientClubMapper.xml"/>
+        <mapper resource="mybatis/xml/CityMapper.xml"/>
     </mappers>
 </configuration>

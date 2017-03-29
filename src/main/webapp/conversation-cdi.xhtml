@@ -25,50 +25,47 @@
                 <li>Button "Back" doesn't navigate through conversation steps (but goes back to the page preceding the conversation).</li>
             </ol>
 
-            <p:fieldset legend="All students" toggleable="true" style="width: 50%">
-                <p:dataTable value="#{conversationUseCaseControllerCdi.allStudents}" var="student">
-                    <p:column headerText="Student">
-                        <h:outputText value="#{student.firstName} #{student.lastName} #{student.registrationNo}" />
+            <p:fieldset legend="All Clients" toggleable="true" style="width: 50%">
+                <p:dataTable value="#{conversationUseCaseControllerCdi.allClients}" var="client">
+                    <p:column headerText="Client">
+                        <h:outputText value="#{client.firstName} #{client.lastName} " />
                     </p:column>
-                    <p:column headerText="Course">
-                        <ui:repeat var="course" value="#{student.courseList}">
-                            <h:outputText value="#{course.name} " />
+                    <p:column headerText="Club">
+                        <ui:repeat var="club" value="#{client.clubList}">
+                            <h:outputText value="#{club.title} " />
                         </ui:repeat>
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
 
-            <p:outputPanel rendered="#{conversationUseCaseControllerCdi.isCurrentForm('CREATE_COURSE')}">
-                <h1>Create new course</h1>
+            <p:outputPanel rendered="#{conversationUseCaseControllerCdi.isCurrentForm('CREATE_CLUB')}">
+                <h1>Create new club</h1>
                 <h:panelGrid id="grid1" columns="3">
-                    <p:outputLabel for="courseName" value="Course name"/>
-                    <p:inputText id="courseName" value="#{conversationUseCaseControllerCdi.course.name}"/>
-                    <p:message for="courseName"/>
+                    <p:outputLabel for="clubTitle" value="Club title"/>
+                    <p:inputText id="clubTitle" value="#{conversationUseCaseControllerCdi.club.title}"/>
+                    <p:message for="clubTitle"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Create course"
-                                 actionListener="#{conversationUseCaseControllerCdi.createCourse}"
+                <p:commandButton value="Create club"
+                                 actionListener="#{conversationUseCaseControllerCdi.createClub}"
                                  update="@form"/>
             </p:outputPanel>
 
-            <p:outputPanel rendered="#{conversationUseCaseControllerCdi.isCurrentForm('CREATE_STUDENT')}">
-                <h1>Create new student</h1>
+            <p:outputPanel rendered="#{conversationUseCaseControllerCdi.isCurrentForm('CREATE_CLIENT')}">
+                <h1>Create new client</h1>
                 <h:panelGrid id="grid" columns="3">
                     <p:outputLabel for="firstName" value="First name"/>
-                    <p:inputText id="firstName" value="#{conversationUseCaseControllerCdi.student.firstName}"/>
+                    <p:inputText id="firstName" value="#{conversationUseCaseControllerCdi.client.firstName}"/>
                     <p:message for="firstName"/>
 
                     <p:outputLabel for="lastName" value="Last name"/>
-                    <p:inputText id="lastName" value="#{conversationUseCaseControllerCdi.student.lastName}"/>
+                    <p:inputText id="lastName" value="#{conversationUseCaseControllerCdi.client.lastName}"/>
                     <p:message for="lastName"/>
 
-                    <p:outputLabel for="regnr" value="Registration No."/>
-                    <p:inputText id="regnr" value="#{conversationUseCaseControllerCdi.student.registrationNo}"/>
-                    <p:message for="regnr"/>
                 </h:panelGrid>
 
-                <p:commandButton value="Create student"
-                                 actionListener="#{conversationUseCaseControllerCdi.createStudent}"
+                <p:commandButton value="Create client"
+                                 actionListener="#{conversationUseCaseControllerCdi.createClient}"
                                  update="@form"/>
 
             </p:outputPanel>

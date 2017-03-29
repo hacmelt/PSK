@@ -1,17 +1,17 @@
 package lt.vu.usecases.cdi.dao;
 
-import lt.vu.entities.Course;
+import lt.vu.entities.Club;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 @ApplicationScoped
-public class CourseDAO {
+public class ClubDAO {
     @Inject
     private EntityManager em;
 
-    public void create(Course course) {
-        em.persist(course);
+    public void create(Club club) {
+        em.persist(club);
     }
 }
