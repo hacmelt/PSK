@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <h:outputStylesheet name="css/styles.css" />
+    <title>Edit Student with Optimistic Locking</title>
+</h:head>
+
+<h:body>
+    <h1>Edit Student with Optimistic Locking</h1>
+
+    <h:form id="form">
+        <p:fieldset id="list" style="width: 50%">
+            <f:facet name="legend">
+                All clients
+                <p:commandButton value="Refresh" icon="ui-icon-arrowrefresh-1-e"
+                                 actionListener="#{editClientUseCaseController.reloadAll}"
+                                 update=":form:list"/>
+            </f:facet>
+
+            <p:dataTable value="#{editClientUseCaseController.allClients}" var="client" tableStyle="table-layout: auto">
+                <p:column headerText="Student">
+                    #{client.firstName} #{client.lastName}, <br/><b>Reg. nr.</b>: #{client.registrationNo}
+                </p:column>
+                <p:column headerText="Clubs">
+                    <ui:repeat var="club" value="#{client.clubList}" varStatus="clubStatus">
+                        #{club.title}<h:outputText value=", " rendered="#{not clubStatus.last}"/>
+                    </ui:repeat>
+                </p:column>
+                <p:column headerText="City">
+                    #{client.city.title}
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Edit" icon="ui-icon-pencil"
+                                     actionListener="#{editClientUseCaseController.prepareForEditing(client)}"
+                                     update=":form:clientDetail"
+                                     oncomplete="PF('clientDialog').show()" />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>
+
+        <p:dialog header="Edit Client" widgetVar="clientDialog" modal="true" closable="true" resizable="false" closeOnEscape="true">
+            <p:outputPanel id="clientDetail">
+                <h:outputText value="No client was selected... Weird..." rendered="#{empty editClientUseCaseController.selectedClient}" />
+                <p:panelGrid  columns="3" rendered="#{not empty editClientUseCaseController.selectedClient}"
+                              columnClasses="label,value" styleClass="ui-noborder">
+                    <p:outputLabel for="firstName" value="First name:"/>
+                    <p:inputText id="firstName" value="#{editClientUseCaseController.selectedClient.firstName}"/>
+                    <p:message for="firstName"/>
+
+                    <p:outputLabel for="lastName" value="Last name:"/>
+                    <p:inputText id="lastName" value="#{editClientUseCaseController.selectedClient.lastName}"/>
+                    <p:message for="lastName"/>
+
+                    <p:outputLabel for="regnr" value="Registration No.:"/>
+                    <p:inputText id="regnr" value="#{editClientUseCaseController.selectedClient.registrationNo}"/>
+                    <p:message for="regnr"/>
+
+                    <p:outputLabel for="city" value="City:"/>
+                    <p:selectOneMenu id="city" value="#{editClientUseCaseController.selectedClient.city}"
+                                     converter="omnifaces.SelectItemsIndexConverter">
+                        <f:selectItem itemLabel="Select city:" itemValue="#{null}"/>
+                        <f:selectItems value="#{editClientUseCaseController.allCities}" var="city"
+                                       itemLabel="#{city.title}" itemValue="#{city}"/>
+                    </p:selectOneMenu>
+                    <p:message for="city"/>
+
+                    <h:outputText value="Clubs:"/>
+                    <p:selectCheckboxMenu id="clubs" value="#{editClientUseCaseController.selectedClient.clubList}"
+                                          converter="omnifaces.SelectItemsIndexConverter"
+                                          label="Select clubs:" updateLabel="true"
+                                          filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <f:attribute name="collectionType" value="java.util.ArrayList" /> <!-- Kitaip JSF bando kurti naują Hibernate PersistentBag ir būna bėdos... -->
+                        <f:selectItems value="#{editClientUseCaseController.allClubs}" var="club"
+                                       itemLabel="#{club.title}" itemValue="#{club}" />
+                    </p:selectCheckboxMenu>
+                    <p:message for="clubs"/>
+
+                    <h:outputText value="Opt. version:" />
+                    <h:outputText value="#{editClientUseCaseController.selectedClient.optLockVersion}" style="font-weight: bold"/>
+                </p:panelGrid>
+
+                <p:commandButton value="Update" actionListener="#{editClientUseCaseController.updateSelectedClient}"
+                                 rendered="#{empty editClientUseCaseController.conflictingClient}"
+                                 icon="ui-icon-check" style="margin-top: 1em"
+                                 update=":form:clientDetail :form:list"
+                                 oncomplete="if (args &amp;&amp; !args.validationFailed) PF('clientDialog').hide()" />
+
+
+                <p:panelGrid  columns="2" rendered="#{not empty editClientUseCaseController.conflictingClient}"
+                              columnClasses="label,value" styleClass="ui-noborder" style="margin-top: 1em">
+                    <f:facet name="header">Conflicting client</f:facet>
+
+                    <h:outputText value="First name:"/>
+                    <h:outputText value="#{editClientUseCaseController.conflictingClient.firstName}"/>
+
+                    <h:outputText value="Last name:"/>
+                    <h:outputText value="#{editClientUseCaseController.conflictingClient.lastName}"/>
+
+                    <h:outputText value="Registration No.:"/>
+                    <h:outputText value="#{editClientUseCaseController.conflictingClient.registrationNo}"/>
+
+                    <h:outputText value="City:"/>
+                    <h:outputText value="#{editClientUseCaseController.conflictingClient.city.title}" />
+
+                    <h:outputText value="Clubs:"/>
+                    <ui:repeat var="club" value="#{editClientUseCaseController.conflictingClient.clubList}" varStatus="clubStatus">
+                        #{club.title}<h:outputText value=", " rendered="#{not clubStatus.last}"/>
+                    </ui:repeat>
+
+                    <h:outputText value="Opt. version:" />
+                    <h:outputText value="#{editClientUseCaseController.conflictingClient.optLockVersion}" style="font-weight: bold"/>
+                </p:panelGrid>
+
+                <p:commandButton value="Overwrite" actionListener="#{editClientUseCaseController.overwriteClient}"
+                                 rendered="#{not empty editClientUseCaseController.conflictingClient}"
+                                 icon="ui-icon-notice" style="margin-top: 1em"
+                                 update=":form:clientDetail :form:list"
+                                 oncomplete="if (args &amp;&amp; !args.validationFailed) PF('clientDialog').hide()" />
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:messages globalOnly="true"/>
+    </h:form>
+
+</h:body>
+</html>

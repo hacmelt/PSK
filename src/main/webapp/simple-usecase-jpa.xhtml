@@ -14,7 +14,7 @@
         <h1>Request type usecase example (DAO with JPA)</h1>
         <h:form>
             <p:fieldset legend="All clients" toggleable="true" style="width: 50%">
-                <p:dataTable value="#{requestUseCaseControllerJPA.getAllClients()}" var="client">
+                <p:dataTable value="#{requestUseCaseControllerJPA.allClients}" var="client">
                     <p:column headerText="Client">
                         <h:outputText value="#{client.firstName} #{client.lastName}" />
                     </p:column>
@@ -53,9 +53,10 @@
                     </td>
                 </tr>
             </table>
-
+<!---->
             <p:commandButton value="Create client and club"
-                             actionListener="#{requestUseCaseControllerJPA.createClubClient()}"
+                             actionListener="#{requestUseCaseControllerJPA.createClientStudent()}"
+                             action="simple-usecase-mybatis?faces-redirect=true"
                              ajax="false"/>
 
             <p:messages globalOnly="true"/>

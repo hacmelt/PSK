@@ -45,5 +45,7 @@
         logAbandoned = true
         jmxEnabled = true
     </Resource>
-
+    <Service id="johnzon" class-name="org.apache.johnzon.jaxrs.ConfigurableJohnzonProvider">
+        accessMode = field
+    </Service>
 </tomee>

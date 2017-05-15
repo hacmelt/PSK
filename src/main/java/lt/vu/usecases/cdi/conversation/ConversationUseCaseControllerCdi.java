@@ -8,6 +8,7 @@ import lt.vu.usecases.cdi.dao.ClubDAO;
 import lt.vu.usecases.cdi.dao.ClientDAO;
 import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
+import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
@@ -47,12 +48,19 @@ public class ConversationUseCaseControllerCdi implements Serializable {
     private Club club = new Club();
     @Getter
     private Client client = new Client();
+    @Getter
+    private List<Client> allClients;
+
 
     private CURRENT_FORM currentForm = CURRENT_FORM.CREATE_CLUB;
     public boolean isCurrentForm(CURRENT_FORM form) {
         return currentForm == form;
     }
 
+    @PostConstruct
+    public void init() {
+        loadAllClients();
+    }
     /**
      * The first conversation step.
      */
@@ -102,7 +110,7 @@ public class ConversationUseCaseControllerCdi implements Serializable {
         return PAGE_INDEX_REDIRECT;
     }
 
-    public List<Client> getAllClients() {
-        return clientDAO.getAllClients();
+    private void loadAllClients() {
+        allClients = clientDAO.getAllClients();
     }
 }

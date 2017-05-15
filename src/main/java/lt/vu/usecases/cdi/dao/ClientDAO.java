@@ -15,8 +15,16 @@ public class ClientDAO {
     public void create(Client client) {
         em.persist(client);
     }
-
+    public void updateAndFlush(Client client) {
+        em.merge(client);
+        em.flush();
+    }
     public List<Client> getAllClients() {
         return em.createNamedQuery("Client.findAll", Client.class).getResultList();
     }
+
+    public Client findById(Integer id) {
+        return em.find(Client.class, id);
+    }
+
 }

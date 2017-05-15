@@ -9,6 +9,7 @@ import lt.vu.usecases.mybatis.model.Client;
 import lt.vu.usecases.mybatis.model.ClientClub;
 import lt.vu.usecases.mybatis.model.Club;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -29,11 +30,13 @@ public class RequestUseCaseControllerMyBatis {
     private ClubMapper clubMapper;
     @Inject
     private ClientClubMapper clientClubMapper;
+    @Getter
+    private List<Client> allClients;
 
-    public List<lt.vu.usecases.mybatis.model.Client> getAllClients() {
-        return clientMapper.selectAll();
+    @PostConstruct
+    public void init() {
+        loadAllClients();
     }
-
     @Transactional
     public void createClubClient() {
         clubMapper.insert(club);
@@ -43,5 +46,8 @@ public class RequestUseCaseControllerMyBatis {
         clientClub.setClientId(client.getId());
         clientClubMapper.insert(clientClub);
         log.info("Maybe OK...");
+    }
+    private void loadAllClients() {
+        allClients = clientMapper.selectAll();
     }
 }

@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.johnzon.mapper.JohnzonIgnore;
 
 @Entity
 @Table(name = "CLIENT")
@@ -26,7 +27,7 @@ import java.util.List;
 })
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"firstName","lastName"})
+@EqualsAndHashCode(of = "registrationNo")
 @ToString(of = {"id", "firstName", "lastName"})
 public class Client implements Serializable {
 
@@ -44,6 +45,10 @@ public class Client implements Serializable {
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @Size(min = 3, max = 20)
+    @Column(name = "REGISTRATION_NO")
+    private String registrationNo;
+
     @Version
     @Column(name = "OPT_LOCK_VERSION")
     private Integer optLockVersion;
@@ -52,10 +57,12 @@ public class Client implements Serializable {
         @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "CLUB_ID", referencedColumnName = "ID")})
     @ManyToMany
+    @JohnzonIgnore
     private List<Club> clubList = new ArrayList<>();
 
     @JoinColumn(name = "CITY_ID", referencedColumnName = "ID")
     @ManyToOne
+    @JohnzonIgnore
     private City city;
 
 }

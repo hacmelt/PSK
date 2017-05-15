@@ -1,6 +1,6 @@
 package lt.vu.usecases.cdi.dao;
 
-import lt.vu.entities.Club;
+import lt.vu.entities.City;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -8,14 +8,15 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @ApplicationScoped
-public class ClubDAO {
+public class CityDAO {
     @Inject
     private EntityManager em;
 
-    public void create(Club club) {
-        em.persist(club);
+    public void create(City city) {
+        em.persist(city);
     }
-    public List<Club> getAllClubs() {
-        return em.createNamedQuery("Club.findAll", Club.class).getResultList();
+
+    public List<City> getAllCities() {
+        return em.createNamedQuery("City.findAll", City.class).getResultList();
     }
 }

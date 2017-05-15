@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.SynchronizationType;
+import javax.enterprise.inject.Default;
+import javax.enterprise.context.Dependent;
 
 @ApplicationScoped
 public class JPAResources {
@@ -16,15 +18,25 @@ public class JPAResources {
     private EntityManagerFactory emf;
 
     @Produces
-    @RequestScoped // Smalsiems: kodel ne @TransactionScoped? Kada @RequestScoped bus blogai o @TransactionScoped - gerai?
+    @Default
+    @RequestScoped
     private EntityManager createJTAEntityManager() {
-        /*
-         * From JavaDoc: Create a new JTA application-managed EntityManager...
-         */
+
         return emf.createEntityManager(SynchronizationType.SYNCHRONIZED);
     }
 
-    private void closeUnsynchronizedEntityManager(@Disposes EntityManager em) {
+    @Produces
+    @RescueOrAsync // Savo susikurta anotacija (Qualifier), skirta: 1. Asinchroniniams komponentams 2. JPA klaidoms apdoroti (pvz.: OptimisticLockException)
+    @Dependent
+    private EntityManager createJTATransactionalEntityManager() {
+        return emf.createEntityManager(SynchronizationType.SYNCHRONIZED);
+    }
+
+    private void closeDefaultEntityManager(@Disposes @Default EntityManager em) {
+        em.close();
+    }
+
+    private void closeRescueEntityManager(@Disposes @RescueOrAsync EntityManager em) {
         em.close();
     }
 

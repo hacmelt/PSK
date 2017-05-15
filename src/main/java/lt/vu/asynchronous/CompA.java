@@ -1,6 +1,7 @@
 package lt.vu.asynchronous;
 
 import javax.ejb.Stateful;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,8 +10,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Named
-@SessionScoped
-@Stateful
+@ApplicationScoped
 public class CompA implements Serializable {
 
     @Inject
@@ -18,9 +18,9 @@ public class CompA implements Serializable {
 
     private Future<String> resultInFuture = null;
 
-    public String sayHello() throws ExecutionException, InterruptedException {
+    public String callAsyncMethod() throws ExecutionException, InterruptedException {
         if (resultInFuture == null) {
-            resultInFuture = compB.sayHello();
+            resultInFuture = compB.asyncMethod();
             return "I just have called CompB. Result is ready? " + resultInFuture.isDone();
         } else {
             if (resultInFuture.isDone()) {

@@ -14,6 +14,7 @@ CREATE TABLE client (
   id serial PRIMARY KEY,
   first_name CHARACTER VARYING(20) NOT NULL,
   last_name CHARACTER VARYING(20) NOT NULL,
+  registration_no CHARACTER VARYING(20) NOT NULL,
   city_id INTEGER,
   opt_lock_version INTEGER,
   FOREIGN KEY (city_id) REFERENCES city (id)

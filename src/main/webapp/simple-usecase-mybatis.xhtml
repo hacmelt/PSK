@@ -14,7 +14,7 @@
         <h1>Request type usecase example (DAO with MyBatis)</h1>
         <h:form>
             <p:fieldset legend="All clients" toggleable="true" style="width: 50%">
-                <p:dataTable value="#{requestUseCaseControllerMyBatis.getAllClients()}" var="client">
+                <p:dataTable value="#{requestUseCaseControllerMyBatis.allClients}" var="client">
                     <p:column headerText="Client">
                         <h:outputText value="#{client.firstName} #{client.lastName}" />
                     </p:column>
@@ -55,6 +55,7 @@
 
             <p:commandButton value="Create client and club"
                              actionListener="#{requestUseCaseControllerMyBatis.createClubClient()}"
+                             action="simple-usecase-mybatis?faces-redirect=true"
                              ajax="false"/>
 
             <p:messages globalOnly="true"/>
